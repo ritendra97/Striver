@@ -1,0 +1,49 @@
+import java.util.*;
+public class Practice 
+{
+	public static int Longest_substring(String S)
+    {
+		int i=-1;
+		int j=-1;
+		int max=0;
+		HashMap<Character,Integer> map = new HashMap<>();
+		while(true)
+		{
+			boolean flag1=false;
+			boolean flag2=false;
+			while(i<S.length()-1)
+			{
+				i++;
+				char ch = S.charAt(i);
+				map.put(ch,map.getOrDefault(ch, 0)+1);
+				if(map.get(ch)==2)
+				{
+					break;
+				}
+				else
+				{
+					int len = i-j;
+					if(len>max)
+						max=len;
+				}
+			}
+			while(j<i)
+			{
+				flag2=true;
+				j++;
+				char ch = S.charAt(j);
+				map.put(ch,map.get(ch)-1);
+				if(map.get(ch)==1)
+					break;
+			}
+			if(flag1==false && flag2==false)
+				break;
+		}
+		return max;
+    }
+    public static void main(String[] args) 
+	{
+		String str = "geeksforgeeks";
+		System.out.println(Longest_substring(str));
+    }
+}
