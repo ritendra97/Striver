@@ -1,0 +1,44 @@
+import java.util.HashMap;
+
+public class Main5 {
+
+    public static Node buildTree(int inOrder[], int postOrder[]){
+
+        if(inOrder==null || postOrder==null || inOrder.length!= postOrder.length) return null;
+
+        HashMap<Integer,Integer> hs = new HashMap<>();
+        for(int i = 0;i<inOrder.length;i++){
+            hs.put(inOrder[i],i);
+        }
+        return buildTreePostIn(inOrder,0,inOrder.length-1,postOrder,0,postOrder.length-1,hs);
+    }
+
+    private static Node buildTreePostIn(int inOrder[], int is, int ie, int postOrder[], int ps, int pe, HashMap<Integer, Integer> hs){
+
+        if(ps>pe || is>ie) return null;
+
+        Node root = new Node(postOrder[pe]);
+        int inRoot = hs.get(postOrder[pe]);
+        int numLeft = inRoot-is;
+
+        root.left = buildTreePostIn(inOrder,is,inRoot-1,postOrder,ps,ps+numLeft-1,hs);
+        root.right = buildTreePostIn(inOrder,inRoot+1,ie,postOrder,ps+numLeft,pe-1,hs);
+
+        return root;
+    }
+
+    public static void Print(Node node){
+        if(node==null) return;
+
+        Print(node.left);
+        System.out.println(node.data);
+        Print(node.right);
+    }
+    public static void main(String[] args){
+
+        int inorder[] = {40,20,50,10,60,30};
+        int postOrder[] = {40,50,20,60,30,10};
+        Node root = buildTree(inorder,postOrder);
+        Print(root);
+    }
+}
