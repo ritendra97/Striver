@@ -1,0 +1,44 @@
+//largestBSTinBTJava
+
+class NodeValue{
+    int minVal;
+    int maxVal;
+    int size;
+
+    public NodeValue(int minVal, int maxVal, int size) {
+        this.minVal = minVal;
+        this.maxVal = maxVal;
+        this.size = size;
+    }
+}
+public class Main4 {
+
+    public static NodeValue largestBSTSubtreeHelper(Node root){
+        if(root==null) return new NodeValue(Integer.MIN_VALUE,Integer.MAX_VALUE,0);
+
+        NodeValue left = largestBSTSubtreeHelper(root.left);
+        NodeValue right = largestBSTSubtreeHelper(root.right);
+
+        if(left.maxVal< root.data && right.minVal> root.data){
+            return new NodeValue(Math.min(left.minVal,root.data),Math.max(root.data, left.maxVal),left.size+right.size+1);
+        }
+
+        return new NodeValue(Integer.MIN_VALUE, Integer.MAX_VALUE,Math.max(left.size, right.size));
+    }
+    public static int largestBSTSubtree(Node root) {
+        return largestBSTSubtreeHelper(root).size;
+    }
+
+    public static void main(String[] args){
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.left.right = new Node(7);
+        root.right.left = new Node(5);
+        root.right.left.left = new Node(8);
+        root.right.left.right = new Node(9);
+        root.right.right = new Node(6);
+        System.out.println(largestBSTSubtree(root));
+    }
+}
