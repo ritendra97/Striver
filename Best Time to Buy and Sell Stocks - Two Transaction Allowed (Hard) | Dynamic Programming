@@ -1,0 +1,66 @@
+//Best Time to Buy and Sell Stocks - Two Transaction Allowed (Hard) | Dynamic Programming
+
+import java.util.Scanner;
+
+public class Main4 {
+
+    public static void Solution(int arr[]){
+
+        int leastsf = arr[0];
+        // maximum profit if sold today
+        int mpist = 0;
+
+        int dp1[] = new int[arr.length];
+        for(int i = 1;i<arr.length;i++){
+            if(arr[i]<leastsf){
+                leastsf = arr[i];
+            }
+            mpist = arr[i]-leastsf;
+            if(dp1[i-1]<mpist){
+                dp1[i] = mpist;
+            }else{
+                dp1[i] = dp1[i-1];
+            }
+        }
+
+        int mxpibt = 0;
+        int maxat = arr[arr.length-1];
+        int dp2[] = new int[arr.length];
+
+        for(int i = arr.length-2;i>=0;i--){
+            if(arr[i+1]>maxat){
+                maxat = arr[i+1];
+            }
+
+            mxpibt = maxat-arr[i];
+            if(mxpibt>dp2[i+1]){
+                dp2[i] = mxpibt;
+            }else{
+                dp2[i] = dp2[i+1];
+            }
+        }
+
+        int op = 0;
+        for(int i = 0;i<arr.length;i++){
+            if(op<dp1[i]+dp2[i]){
+                op=dp1[i]+dp2[i];
+            }
+        }
+
+        System.out.println(op);
+    }
+
+    public static void main(String[] args){
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        int arr[] = new int[n];
+
+        for(int i=0;i< arr.length;i++){
+            arr[i] = sc.nextInt();
+        }
+
+        Solution(arr);
+    }
+}
